@@ -1,0 +1,53 @@
+name: Build and Publish NuGet Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Build
+      run: dotnet build -c Release
+      working-directory: LearningSystemPublisher/LearningSystem.Publisher
+
+    - name: Test
+      run: dotnet test
+      working-directory: LearningSystemPublisher/LearningSystem.Publisher
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 8.0.x
+      
+    - name: Build
+      run: dotnet build -c Release
+      working-directory: LearningSystemPublisher/LearningSystem.Publisher
+
+    - name: Pack
+      run: dotnet pack -c Release
+      working-directory: LearningSystemPublisher/LearningSystem.Publisher/
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+       
+    - name: Publish to GitHub Packages
+      run: dotnet nuget push **/*.nupkg --source https://nuget.pkg.github.com/Ghost-Sound/index.json --api-key ${{ secrets.API_NUGET_KEY_NEW }}
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
