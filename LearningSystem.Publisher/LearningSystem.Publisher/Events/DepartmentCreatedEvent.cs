@@ -4,7 +4,7 @@ namespace LearningSystem.Publisher.Events
 {
     public record DepartmentCreatedEvent
     {
-        public Ulid Id { get; set; }
+        public string Id { get; set; }
         public DateTime Created { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }

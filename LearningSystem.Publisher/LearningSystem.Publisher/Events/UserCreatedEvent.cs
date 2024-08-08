@@ -2,7 +2,7 @@
 {
     public record UserCreatedEvent
     {
-        public Ulid Id { get; set; }
+        public string Id { get; set; }
         public DateTime Created { get; set; }
     }
 }
