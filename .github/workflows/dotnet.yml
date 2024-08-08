@@ -20,11 +20,11 @@ jobs:
 
     - name: Build
       run: dotnet build -c Release
-      working-directory: LearningSystemPublisher/LearningSystem.Publisher
+      working-directory: LearningSystem.Publisher/LearningSystem.Publisher
 
     - name: Test
       run: dotnet test
-      working-directory: LearningSystemPublisher/LearningSystem.Publisher
+      working-directory: LearningSystem.Publisher/LearningSystem.Publisher
 
   publish:
     needs: build
@@ -41,11 +41,11 @@ jobs:
       
     - name: Build
       run: dotnet build -c Release
-      working-directory: LearningSystemPublisher/LearningSystem.Publisher
+      working-directory: LearningSystem.Publisher/LearningSystem.Publisher
 
     - name: Pack
       run: dotnet pack -c Release
-      working-directory: LearningSystemPublisher/LearningSystem.Publisher/
+      working-directory: LearningSystem.Publisher/LearningSystem.Publisher/
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
        
     - name: Publish to GitHub Packages
